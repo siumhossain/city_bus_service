@@ -28,10 +28,10 @@
         <form>
           <div class="mb-3">
             <label for="exampleInputEmail1" class="form-label">Pickup Point</label>
-            <input  v-model="pickup" @focus="form" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+            <input v-model="pickup" @focus="form" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
             <div v-if="model">
               <ul  class="list-group" v-for="name in pick_obj" :key="name.id">
-                <li class="list-group-item" @click="set_location(name.name)">{{name.name}}</li>
+                <li class="list-group-item" @click="set_location(name.name_of_route)">{{name.name_of_route}}</li>
               
               </ul>
             </div>
@@ -108,6 +108,7 @@ export default {
     set_location(value){
       this.pickup = value
       this.model = false
+
 
     },
     form(){
