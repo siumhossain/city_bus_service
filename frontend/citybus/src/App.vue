@@ -1,46 +1,49 @@
 <template>
 
 <!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-light shadow-1">
-  <div class="container">
-    <a class="navbar-brand text-Purple50" href="#">Sohochor</a>
-    <button
+  <nav class="navbar navbar-expand-md navbar-light mx-2 px-2">
+    <div class="container">
+      <!-- navbar brand / title -->
+      <a class="navbar-brand" href="#intro">
+        <span class=" fw-bold">
+          Sohochor
+        </span>
+      </a>
+      <!-- toggle button for mobile nav -->
+      <button
       class="navbar-toggler"
       type="button"
       data-mdb-toggle="collapse"
-      data-mdb-target="#navbarNav"
-      aria-controls="navbarNav"
+      data-mdb-target="#main-nav"
+      aria-controls="main-nav"
       aria-expanded="false"
       aria-label="Toggle navigation"
     >
       <i class="fas fa-bars"></i>
     </button>
-    <div class="collapse navbar-collapse" id="navbarButtonsExample">
-      <!-- Left links -->
-      
-      <!-- Left links -->
 
-      <div class="d-flex align-items-center ms-auto">
-        
-        <div class="px-2 me-1">
-          <router-link to='/about'>About</router-link>
-        </div>
+      <!-- navbar links -->
+      <div class="collapse navbar-collapse justify-content-end align-center" id="main-nav">
+        <ul class="navbar-nav">
+          <li class="nav-item px-2 me-1 py-2">
+            <b>Hi! {{$store.state.user.username}}</b> 
+          </li>
+          <li class="nav-item px-2 me-1 py-2">
+            <router-link to='/about'>About</router-link>
+          </li>
+          <li v-if='this.$store.state.user === null' class="nav-item px-2 me-1 py-2">
+            <router-link to='/login'>Login</router-link>
+          </li>
 
-        <div class="px-2 me-3">
-          <router-link to='/login'>Login</router-link>
-        </div>
-        
-        
-        <a
-          class="btn btn-dark px-3"
-          href="https://github.com/mdbootstrap/mdb-ui-kit"
-          role="button"
-          ><i class="fab fa-github"></i
-        ></a>
+          <li v-else class="nav-item px-2 me-1 py-2">
+            logout
+          </li>
+          
+          
+        </ul>
       </div>
     </div>
-  </div>
-</nav>
+  </nav>
 <!-- Navbar -->
 
   
@@ -49,6 +52,22 @@
           
   <router-view/>
 </template>
+
+<script>
+import axios from 'axios'
+export default {
+  async beforeCreate(){
+    await axios.get('api/auth/users/me/')
+    .then(res => {
+      this.$store.dispatch('user',res.data)
+
+    })
+    .then(err =>{
+      console.log(err)
+    })
+  }
+}
+</script>
 
 <style>
 
@@ -65,6 +84,8 @@
 body{
   background-color: #FEFBF3;
 }
+
+
 
 
 </style>

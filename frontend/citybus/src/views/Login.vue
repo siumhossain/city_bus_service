@@ -54,12 +54,22 @@ export default {
                 password:this.password
             }
             //console.log(formdata)
+            delete  axios.defaults.headers.common["Authorization"];
             await axios.post('api/auth/token/login/',formdata)
             .then(res => {
                 const token = res.data['auth_token']
                 // this.$store.dispatch('user',res.data)
                 localStorage.setItem('token',token)
-                
+                axios.defaults.headers.common['Authorization'] =  "Token "  +  localStorage.getItem('token')
+                axios.get('api/auth/users/me/')
+                .then(res => {
+                    this.$store.dispatch('user',res.data)
+                    //console.log(this.$store.state.user)
+                    this.$router.push('/')
+                })
+                .then(err => {
+                    console.log(err)
+                })
                 //console.log(this.$store.state.user.auth_token)
             })
             .then(err => {
