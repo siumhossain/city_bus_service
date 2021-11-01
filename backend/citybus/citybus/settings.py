@@ -100,6 +100,7 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
        
     ),
+    'DATETIME_FORMAT': "%b %d at %I:%M %P"
 }
 
 

@@ -23,7 +23,7 @@ class TimeSlotSerializer(serializers.ModelSerializer):
     longitude = serializers.SerializerMethodField()
     latitude = serializers.SerializerMethodField()
     name_of_route = serializers.SerializerMethodField()
-
+    time = serializers.TimeField(format="%I:%M %p")
 
     def get_name_of_bus(self,obj):
         return obj.bus_name.name

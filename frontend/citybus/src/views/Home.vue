@@ -19,19 +19,19 @@
 
   <!-- ticket-section -->
 
-  <section class="bg-light" @click="hide_model">
+  <section class="bg-light">
     <div class="container bg-light">
     <div class="row">
       <h1 class="display-4 text-center my-4">Purchase your ticket</h1>
       <!-- <h2>{{pickup}}</h2> -->
-      <div class="col-lg-5">
+      <div class="col-lg-4">
         <form>
           <div class="mb-3">
             <label for="exampleInputEmail1" class="form-label">Pickup Point</label>
-            <input v-model="pickup" @focus="form" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+            <input v-model="pickup" @focus="form" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
             <div v-if="model">
               <ul  class="list-group" v-for="name in pick_obj" :key="name.id">
-                <li class="list-group-item" @click="set_location(name.name_of_route)">{{name.name_of_route}}</li>
+                <li class="list-group-item" @click="set_location(name)">{{name.name_of_route}}</li>
               
               </ul>
             </div>
@@ -43,19 +43,35 @@
       </div>
 
       <!-- end -->
-      <div class="col-lg-5">
+
+      <!-- destination -->
+      <div class="col-lg-4">
         <label for="exampleInputEmail1" class="form-label">Destination</label>
         <select class="form-select" id="exampleInputEmail1" aria-label="Default select example">
         <option selected>Select</option>
-        <option value="1">One</option>
-        <option value="2">Two</option>
-        <option value="3">Three</option>
+        <option v-for="des in destinantion" :key="des.id" value="{{des.name_of_route}}">{{des.name_of_route}}</option>
+        
         </select>
         
 
       </div>
-      <div class="col-lg-2 button-top">
-        <button type="button" class="btn btn-primary">Search</button>
+      <!-- end -->
+
+      <!-- time -->
+      <div class="col-lg-2">
+        <label for="exampleInputEmail1" class="form-label">Time</label>
+        <select class="form-select" id="exampleInputEmail1" aria-label="Default select example">
+        <option selected>Select</option>
+        <option v-for="name in pick_obj" :key="name.id" value="{{name.time}}">{{name.time}}</option>
+        
+        </select>
+
+      </div>
+
+      <!-- end -->
+
+      <div class="col-lg-1 button-top">
+        <button type="button" class="btn btn-primary">Confirm</button>
 
       </div>
       
@@ -86,6 +102,8 @@ export default {
     return{
       pickup:'',
       pick_obj:[],
+      destinantion:[],
+      
       model:false
     }
   },
@@ -105,9 +123,24 @@ export default {
     }
   },
   methods:{
-    set_location(value){
-      this.pickup = value
+    async set_location(value){
+      this.pickup = value.name_of_route
       this.model = false
+      
+      console.log(value.bus_id,value.trip_number,value.station_serial)
+      const data = {
+        bus_id : value.bus_id,
+        serial_number: value.station_serial,
+        trip_number : value.trip_number
+      }
+      await axios.post('api/route_search_destination/',data)
+      .then(res => {
+        console.log(res.data['data'])
+        this.destinantion = res.data['data']
+      })
+      .catch(err => {
+        console.log(err)
+      })
 
 
     },

@@ -28,14 +28,16 @@ def pickup(request):
     location = request.data['pickup']
     print(location)
     try:
-        result = Route.objects.filter(name__icontains = location).distinct()
+        result = TimeSlot.objects.filter(
+
+            Q(bus_at_now__name__icontains = location) & Q(station_serial__exact=1)).distinct()[:3]
         print(result)
-        serializers = RouteSerializer(result,many=True)
+        serializers = TimeSlotSerializer(result,many=True)
         return Response({"status": "success", "data": serializers.data}, status=status.HTTP_200_OK)
-    except Route.DoesNotExist:
+    except TimeSlot.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
-@api_view(['GET'])
+@api_view(['POST'])
 def destination(request):
     bus_id = request.data['bus_id']
     serial_number = int(request.data['serial_number'])
