@@ -24,6 +24,11 @@
     <div class="row">
       <h1 class="display-4 text-center my-4">Purchase your ticket</h1>
       <!-- <h2>{{pickup}}</h2> -->
+      <span v-if='this.$store.state.user === null' class="info my-3 text-center">
+        <i class="fas fa-info-circle"></i>
+        <b> You have to be logged in or registered for purchasing ticket</b>
+      </span>
+      
       <div class="col-lg-4">
         <form>
           <div class="mb-3">
@@ -71,9 +76,19 @@
       <!-- end -->
 
       <div class="col-lg-1 button-top">
-        <button type="button" class="btn btn-primary">Confirm</button>
-
+        <button v-if='this.$store.state.user !== null' type="button" class="btn btn-primary">Confirm</button>
+        
+        <button
+          disabled
+          v-else
+          type="button"
+          class="btn btn-primary"
+        >
+          Confirm
+        </button>
+       
       </div>
+      
       
       
       
@@ -176,4 +191,8 @@ export default {
 }
 
 li { cursor: pointer; }
+
+.info{
+  color:crimson
+}
 </style>

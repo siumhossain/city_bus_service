@@ -4,7 +4,7 @@
   <nav class="navbar navbar-expand-md navbar-light mx-2 px-2">
     <div class="container">
       <!-- navbar brand / title -->
-      <a class="navbar-brand" href="#intro">
+      <a class="navbar-brand" href="/">
         <span class=" fw-bold">
           Sohochor
         </span>
@@ -25,19 +25,22 @@
       <!-- navbar links -->
       <div class="collapse navbar-collapse justify-content-end align-center" id="main-nav">
         <ul class="navbar-nav">
-          <li class="nav-item px-2 me-1 py-2">
+          <li v-if="this.$store.state.user !== null" class="nav-item px-2 me-1 py-3">
             <b>Hi! {{$store.state.user.username}}</b> 
           </li>
-          <li class="nav-item px-2 me-1 py-2">
+          <li class="nav-item px-2 me-1 py-3">
             <router-link to='/about'>About</router-link>
           </li>
           <li v-if='this.$store.state.user === null' class="nav-item px-2 me-1 py-2">
-            <router-link to='/login'>Login</router-link>
+            <router-link to='/login'>
+            <button class="btn btn-primary">Login</button>
+            </router-link>
+          </li>
+          <li v-if="this.$store.state.user !== null" class="nav-item px-2 me-1 py-2">
+            <button v-on:click='logout' class="btn btn-primary">Log out</button>
           </li>
 
-          <li v-else class="nav-item px-2 me-1 py-2">
-            logout
-          </li>
+          
           
           
         </ul>
@@ -65,6 +68,23 @@ export default {
     .then(err =>{
       console.log(err)
     })
+  },
+  methods:{
+    async logout(){
+      await axios.post('api/auth/token/logout')
+      .then(res => {
+        console.log(res)
+        localStorage.removeItem('token')
+        this.$store.dispatch('user',null)
+        this.$router.push('/')
+      })
+      .then(err => {
+        console.log(err)
+      })
+    }
+    
+      
+    
   }
 }
 </script>
@@ -83,6 +103,10 @@ export default {
 
 body{
   background-color: #FEFBF3;
+}
+
+.btn-success{
+  background-color: #4E9F3D;
 }
 
 
