@@ -3,10 +3,10 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 
 from core import serializers
-from .models import Album, Route, TimeSlot
+from .models import Album, Route, RouteDetails, TimeSlot
 from django.db.models import Q
 from rest_framework import status,viewsets
-from .serializers import AlbumSerializer, RouteSerializer, TimeSlotSerializer
+from .serializers import AlbumSerializer, RouteSerializer, TimeSlotSerializer,RouteDetailsSerializer
 from geopy import distance
 
 # Create your views here.
@@ -76,6 +76,11 @@ def check(request):
         'distance':km
     })
 
+@api_view(['GET'])
+def route_details(request):
+    obj = RouteDetails.objects.all()
+    serializers = RouteDetailsSerializer(obj,many=True)
+    return Response({"status": "success", "data": serializers.data}, status=status.HTTP_200_OK)
         
 
 

@@ -111,3 +111,7 @@ class Track(models.Model):
 
     def __str__(self):
         return f'{self.order} : {self.title}'
+
+
+class RouteDetails(models.Model):
+    route = models.ManyToManyField(TimeSlot)

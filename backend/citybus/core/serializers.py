@@ -1,7 +1,7 @@
 from django.db import models
 from django.db.models import fields
 from rest_framework import serializers
-from .models import Bus, TimeSlot,Route,Album,Track
+from .models import Bus, RouteDetails, TimeSlot,Route,Album,Track
 
 
 
@@ -13,6 +13,8 @@ class RouteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Route
         fields = ['id','name','longitude','latitude']
+
+
 
 class TimeSlotSerializer(serializers.ModelSerializer):
     bus = BusSerializer(read_only=True)
@@ -44,8 +46,14 @@ class TimeSlotSerializer(serializers.ModelSerializer):
         fields = ['route','bus','id','bus_id','name_of_bus','route_id','name_of_route','longitude','latitude','station_serial','trip_number','time']
 
 
-
-
+class RouteDetailsSerializer(serializers.ModelSerializer):
+    
+    
+    class Meta:
+        model = RouteDetails
+        fields = '__all__'
+        depth=1
+        
 class TrackSerializer(serializers.ModelSerializer):
     class Meta:
         model = Track

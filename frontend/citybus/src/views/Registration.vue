@@ -50,19 +50,19 @@
                 </div>
                 <div class="mb-3">
                             <label for="username" class="form-label">User Name</label>
-                            <input type="text" v-model="username" class="form-control" id="username" >
+                            <input type="text" v-model="username" class="form-control" id="username" required>
                     
                         </div>
                 <div class="mb-3">
                             <label for="email" class="form-label">Email</label>
-                            <input type="text" v-model="email" class="form-control" id="email">
+                            <input type="text" v-model="email" class="form-control" id="email" required>
                     
                         </div>
 
                 
                 <div class="mb-3">
                     <label for="exampleInputPassword1" class="form-label">Password</label>
-                    <input type="password" v-model="password" class="form-control" id="exampleInputPassword1">
+                    <input type="password" v-model="password" class="form-control" id="exampleInputPassword1" required>
                 </div>
                 
                 

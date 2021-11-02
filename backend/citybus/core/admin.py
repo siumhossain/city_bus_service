@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 
-from .models import Album, BusCompany, Bus, Route,Ticket, TimeSlot, Track, User  
+from .models import Album, BusCompany, Bus, Route, RouteDetails,Ticket, TimeSlot, Track, User  
 # Register your models here.
 
 
@@ -13,6 +13,8 @@ admin.site.register(Route)
 admin.site.register(Ticket)
 admin.site.register(Bus)
 admin.site.register(TimeSlot)
+admin.site.register(RouteDetails)
+
 
 
 
