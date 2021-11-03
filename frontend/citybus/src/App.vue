@@ -26,7 +26,7 @@
       <div class="collapse navbar-collapse justify-content-end align-center" id="main-nav">
         <ul class="navbar-nav">
           <li v-if="this.$store.state.user !== null" class="nav-item px-2 me-1 py-3">
-            <b>Hi! {{$store.state.user.username}}</b> 
+            <b>Hi! {{$store.state.user.username}} 🙋</b> 
           </li>
           <li class="nav-item px-2 me-1 py-3">
             <router-link to='/about'>About</router-link>

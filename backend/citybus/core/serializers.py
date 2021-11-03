@@ -12,7 +12,7 @@ class BusSerializer(serializers.ModelSerializer):
 class RouteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Route
-        fields = ['id','name','longitude','latitude']
+        fields = '__all__'
 
 
 
@@ -49,9 +49,10 @@ class TimeSlotSerializer(serializers.ModelSerializer):
 class RouteDetailsSerializer(serializers.ModelSerializer):
     
     
+    
     class Meta:
         model = RouteDetails
-        fields = '__all__'
+        fields = ['id','route']
         depth=1
         
 class TrackSerializer(serializers.ModelSerializer):

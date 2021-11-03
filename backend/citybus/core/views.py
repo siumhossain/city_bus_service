@@ -79,8 +79,22 @@ def check(request):
 @api_view(['GET'])
 def route_details(request):
     obj = RouteDetails.objects.all()
+    print(obj.values())
     serializers = RouteDetailsSerializer(obj,many=True)
     return Response({"status": "success", "data": serializers.data}, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+def route_name(request):
+    obj = Route.objects.all().order_by('name')
+    
+    serializers = RouteSerializer(obj,many=True)
+    return Response({"status": "success", "data": serializers.data}, status=status.HTTP_200_OK)
+
+
+
+
+
         
 
 

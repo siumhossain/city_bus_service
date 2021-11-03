@@ -7,7 +7,11 @@
       <div class="col-md-6 col-lg-6 my-5 ">
         <h1 class="display-2">Sohochor</h1>
         <h3 class="display-5 muted">Make your journey safe with us</h3>
-        <button class="btn btn-primary">Checkout available route</button>
+
+        <router-link to="/routes">
+          <button class="btn btn-primary">Checkout our pickup point</button>
+        </router-link>
+        
       </div>
 
       <!-- animation -->
@@ -99,7 +103,7 @@
   <!-- ticket-section-end -->
   
     
-
+  <router-view></router-view>
 
 
   

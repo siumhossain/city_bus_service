@@ -26,7 +26,7 @@ class Route(models.Model):
     latitude = models.CharField(max_length=50,null=True,blank=True)
 
     def __str__(self):
-        return f'{self.name}|{self.latitude}|{self.latitude}'
+        return f'{self.id} | {self.name}|{self.latitude}|{self.latitude}'
 
     def save(self,*args,**kwargs):
         location = geolocator.reverse(f'{self.longitude},{self.latitude}',language='en')

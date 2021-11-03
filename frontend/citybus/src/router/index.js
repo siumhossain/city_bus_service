@@ -31,6 +31,15 @@ const routes = [
     // which is lazy-loaded when the route is visited.
     component: () => import('../views/Registration.vue')
   }
+  ,
+  {
+    path: '/routes',
+    name: 'Routes',
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import('../views/Routes.vue')
+  }
 ]
 
 const router = createRouter({
