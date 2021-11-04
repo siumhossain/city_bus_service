@@ -4,11 +4,12 @@
   <nav class="navbar navbar-expand-md navbar-light mx-2 px-2">
     <div class="container">
       <!-- navbar brand / title -->
-      <a class="navbar-brand" href="/">
+      <div class="navbar-brand">
         <span class=" fw-bold">
-          Sohochor
+          <router-link to='/'>Sohochor</router-link>
+          
         </span>
-      </a>
+      </div>
       <!-- toggle button for mobile nav -->
       <button
       class="navbar-toggler"
@@ -107,6 +108,10 @@ body{
 
 .btn-success{
   background-color: #4E9F3D;
+}
+
+a{
+  color: Black;
 }
 
 

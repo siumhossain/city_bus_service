@@ -9,8 +9,6 @@ from rest_framework import status,viewsets
 from .serializers import AlbumSerializer, RouteSerializer, TimeSlotSerializer,RouteDetailsSerializer
 from geopy import distance
 
-# Create your views here.
-
 @api_view(['GET'])
 def home(request,**kwargs):
     if request.method == 'GET':

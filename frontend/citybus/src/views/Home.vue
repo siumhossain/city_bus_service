@@ -23,8 +23,9 @@
 
   <!-- ticket-section -->
 
+  
   <section class="bg-light">
-    <div class="container bg-light">
+    <div class="container">
     <div class="row">
       <h1 class="display-4 text-center my-4">Purchase your ticket</h1>
       <!-- <h2>{{pickup}}</h2> -->
@@ -33,11 +34,12 @@
         <b> You have to be logged in or registered for purchasing ticket</b>
       </span>
       
-      <div class="col-lg-4">
-        <form>
-          <div class="mb-3">
-            <label for="exampleInputEmail1" class="form-label">Pickup Point</label>
-            <input v-model="pickup" @focus="form" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+        <div class="row for-form">
+          <div class="col-lg-8">
+            <form class="mx-3 px-3">
+          <div class="form-group row mb-3">
+            
+            <input v-model="pickup" @focus="form" type="text" class="form-control " id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="⌨ Type your location">
             <div v-if="model">
               <ul  class="list-group" v-for="name in pick_obj" :key="name.id">
                 <li class="list-group-item" @click="set_location(name)">{{name.name_of_route}}</li>
@@ -49,56 +51,79 @@
           </div>
         </form>
 
+          </div>
+        </div>
+        <div class="row for-form">
+          <div class="col-lg-10">
+            <table v-if='table' class="table align-middle">
+              <thead>
+                <tr>
+                  <th scope="col">Bus</th>
+                  <th scope="col">Destination</th>
+                  <th scope="col">Time</th>
+                  <th scope="col">Confirm</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="des in destination" :key="des.id">
+                  
+                  <td>
+                    <span class="mt-2 mx-2">
+                      <i class="fas fa-bus-alt"></i>
+                    </span>
+                    <b>{{des.name_of_bus}}</b>
+                  </td>
+                  <td>
+                    <span class="mt-2 mx-2">
+                            <i class="fas fa-map-marker-alt"></i>
+                    </span>
+                    <b>{{des.name_of_route}}</b>
+                  </td>
+                  <td>
+                    <span class="mt-2 mx-2">
+                      <i class="fas fa-clock"></i>
+                    </span>
+                    <b>{{des.time}}</b>
+                    
+                  </td>
+                  <td>
+                    <button v-if='$store.state.user !== null' class="btn btn-primary">
+                      Confirm
+                    </button>
+                    <button v-else class="btn btn-primary" disabled>
+                      Confirm
+                    </button>
+
+                  </td>
+                  
+                  
+                </tr>
+                
+                
+              </tbody>
+            </table>
+
+          </div>
+        </div>
+        
+
       </div>
 
       <!-- end -->
 
       <!-- destination -->
-      <div class="col-lg-4">
-        <label for="exampleInputEmail1" class="form-label">Destination</label>
-        <select class="form-select" id="exampleInputEmail1" aria-label="Default select example">
-        <option selected>Select</option>
-        <option v-for="des in destinantion" :key="des.id" value="{{des.name_of_route}}">{{des.name_of_route}}</option>
-        
-        </select>
-        
-
-      </div>
-      <!-- end -->
-
-      <!-- time -->
-      <div class="col-lg-2">
-        <label for="exampleInputEmail1" class="form-label">Time</label>
-        <select class="form-select" id="exampleInputEmail1" aria-label="Default select example">
-        <option selected>Select</option>
-        <option v-for="name in pick_obj" :key="name.id" value="{{name.time}}">{{name.time}}</option>
-        
-        </select>
-
-      </div>
-
-      <!-- end -->
-
-      <div class="col-lg-1 button-top">
-        <button v-if='this.$store.state.user !== null' type="button" class="btn btn-primary">Confirm</button>
-        
-        <button
-          disabled
-          v-else
-          type="button"
-          class="btn btn-primary"
-        >
-          Confirm
-        </button>
-       
-      </div>
       
       
       
       
-    </div>
+      
+    
   </div>
   </section>
+
+
+
+  
 
   <!-- ticket-section-end -->
   
@@ -120,8 +145,11 @@ export default {
   data(){
     return{
       pickup:'',
+      table:false,
       pick_obj:[],
-      destinantion:[],
+      destination:{},
+      
+      
       
       model:false
     }
@@ -131,22 +159,26 @@ export default {
       const data = {
         pickup:value
       }
+      delete  axios.defaults.headers.common["Authorization"];
       axios.post('api/route_search/',data)
       .then(res => {
-        console.log(res.data['data'])
+        
         this.pick_obj = res.data['data']
+        this.table = true
+        axios.defaults.headers.common['Authorization'] =  "Token "  +  localStorage.getItem('token')
       })
       .then(err => {
         console.log(err)
       })
-    }
+    },
+    
   },
   methods:{
     async set_location(value){
       this.pickup = value.name_of_route
       this.model = false
       
-      console.log(value.bus_id,value.trip_number,value.station_serial)
+      delete  axios.defaults.headers.common["Authorization"];
       const data = {
         bus_id : value.bus_id,
         serial_number: value.station_serial,
@@ -154,8 +186,12 @@ export default {
       }
       await axios.post('api/route_search_destination/',data)
       .then(res => {
+        
         console.log(res.data['data'])
-        this.destinantion = res.data['data']
+
+        this.destination = res.data['data']
+        console.log(this.destination)
+        axios.defaults.headers.common['Authorization'] =  "Token "  +  localStorage.getItem('token')
       })
       .catch(err => {
         console.log(err)
@@ -163,8 +199,13 @@ export default {
 
 
     },
+    
     form(){
       this.model= true
+      
+    },
+    submit(){
+      console.log('click')
       
     }
   }
@@ -198,5 +239,17 @@ li { cursor: pointer; }
 
 .info{
   color:crimson
+}
+.point{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+.for-form{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  
 }
 </style>

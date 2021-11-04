@@ -37,11 +37,13 @@ export default {
             route_name:[]
         }
     },
-    async beforeMount(){
+    async created(){
+        delete  axios.defaults.headers.common["Authorization"];
         await axios.get('api/route_name/')
         .then(res => {
-            console.log(res.data.data)
+            console.log(res)
             this.route_name = res.data.data
+            axios.defaults.headers.common['Authorization'] =  "Token "  +  localStorage.getItem('token')
 
         })
     }
