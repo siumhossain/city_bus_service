@@ -1,7 +1,7 @@
 from django.db import models
 from django.db.models import fields
 from rest_framework import serializers
-from .models import Bus, RouteDetails, TimeSlot,Route,Album,Track
+from .models import ApplyHalf, Bus, Fileup, RouteDetails, Ticket, TimeSlot,Route,Album,Track
 
 
 
@@ -67,3 +67,18 @@ class AlbumSerializer(serializers.ModelSerializer):
         model = Album
         fields = ['album_name', 'artist', 'tracks']
 
+class TicketSerializer(serializers.ModelSerializer):
+    time = serializers.TimeField(format="%I:%M %p")
+    class Meta:
+        model = Ticket
+        fields = ['id','pickup','destination','time','created']
+
+class FileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Fileup
+        fields = '__all__'
+
+class ApplyHalfSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ApplyHalf
+        fields = ['user','message','file','created']

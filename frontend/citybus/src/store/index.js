@@ -3,7 +3,7 @@ import { createStore } from 'vuex'
 export default createStore({
   state: {
     user:null,
-    error:[]
+    
   },
   
   actions: {

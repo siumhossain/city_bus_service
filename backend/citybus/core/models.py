@@ -4,10 +4,22 @@ from django.db import models
 from django.db.models.base import Model
 from geopy.geocoders import Nominatim
 from django.db.models import Q
+from django.conf import settings
+from django.core.mail import send_mail
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+
 geolocator = Nominatim(user_agent="city_bus")
 # Create your models here.
 class User(AbstractUser):
-    pass 
+    def save(self,*args,**kwargs):
+
+        subject = 'welcome to Sohochor'
+        message = f'Hi 🙋 {self.username}, Thank you for registering in Sohochor. We always wish you safe journey . Please stay with us 🥰'
+        email_from = settings.EMAIL_HOST_USER
+        recipient_list = [self.email, ]
+        send_mail( subject, message, email_from, recipient_list )
+        super().save(*args,**kwargs) 
 
 class BusCompany(models.Model):
     company_name = models.CharField(max_length=30)
@@ -79,19 +91,17 @@ class TimeSlot(models.Model):
        
 
 class Ticket(models.Model):
-    buyer = models.ForeignKey('User',on_delete=models.CASCADE)
-    bus = models.ForeignKey('Bus',on_delete=models.CASCADE)
-    deprature_point = models.CharField(max_length=50,default='')
-    destination = models.CharField(max_length=50,default='')
-    seat_number = models.CharField(max_length=10,default='')
-    validity = models.BooleanField(default=True)
-    price = models.FloatField()
-    time = models.DateTimeField(auto_now=True)
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    pickup = models.CharField(max_length=500)
+    destination = models.CharField(max_length=500)
+    time = models.TimeField()
+    created = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['-created']
 
     def __str__(self):
-        return f'{self.buyer} | {self.bus}'
-
-
+        return f'{self.id} | {self.pickup} | {self.destination}'
 
 
 
@@ -115,3 +125,21 @@ class Track(models.Model):
 
 class RouteDetails(models.Model):
     route = models.ManyToManyField(TimeSlot)
+
+class Fileup(models.Model):
+    files = models.FileField(blank=False,null=False)
+
+class ApplyHalf(models.Model):
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    message = models.TextField(null=True,blank=True)
+    file = models.FileField(blank=False,null=False)
+    created = models.DateTimeField(auto_now=True,blank=True)
+    confirm = models.BooleanField(default=False)
+
+    class Meta:
+        ordering = ['-created']
+
+
+
+    
+    

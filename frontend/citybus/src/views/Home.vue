@@ -1,7 +1,7 @@
 <template>
 
   <!-- first section -->
-
+  
   <div class="container">
     <div class="row">
       <div class="col-md-6 col-lg-6 my-5 ">
@@ -15,9 +15,9 @@
       </div>
 
       <!-- animation -->
-      <!-- <div class="col-md-6 col-lg-6 my-3 center">
+      <div class="col-md-6 col-lg-6 my-3 center">
         <lottie-player src="https://assets4.lottiefiles.com/packages/lf20_BBOVEK.json"  background="transparent"  speed="1"  style="width: 350px;"  loop  autoplay></lottie-player>
-      </div> -->
+      </div>
     </div>
   </div>
 
@@ -87,7 +87,7 @@
                     
                   </td>
                   <td>
-                    <button v-if='$store.state.user !== null' class="btn btn-primary">
+                    <button @click="confirm(des.name_of_route,des.time)" v-if='$store.state.user !== null' class="btn btn-primary">
                       Confirm
                     </button>
                     <button v-else class="btn btn-primary" disabled>
@@ -165,6 +165,7 @@ export default {
         
         this.pick_obj = res.data['data']
         this.table = true
+        
         axios.defaults.headers.common['Authorization'] =  "Token "  +  localStorage.getItem('token')
       })
       .then(err => {
@@ -174,6 +175,21 @@ export default {
     
   },
   methods:{
+    async created(){
+      console.log('created from home')
+     
+      await axios.get('api/auth/users/me/')
+    .then(res => {
+      this.$store.dispatch('user',res.data)
+      console.log(this.$store.state.user)
+
+    })
+    .then(err =>{
+      console.log(err)
+    })
+
+    
+    },
     async set_location(value){
       this.pickup = value.name_of_route
       this.model = false
@@ -206,6 +222,20 @@ export default {
     },
     submit(){
       console.log('click')
+      
+    },
+    confirm(destination,time){
+      const data = {
+        pickup:this.pickup,
+        destination:destination,
+        time:time
+      }
+      console.log(data)
+      axios.post('api/ticket/',data)
+      .then(res => {
+        console.log(res.data)
+        this.$router.push('/ticket')
+      })
       
     }
   }

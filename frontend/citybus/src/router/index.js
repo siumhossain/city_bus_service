@@ -39,7 +39,24 @@ const routes = [
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () => import('../views/Routes.vue')
-  }
+  },
+  {
+    path: '/ticket',
+    name: 'Ticket',
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import('../views/Ticket.vue')
+  },
+  {
+    path: '/apply',
+    name: 'Apply',
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import('../views/Apply.vue')
+  },
+
 ]
 
 const router = createRouter({

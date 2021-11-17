@@ -64,6 +64,12 @@
                     <label for="exampleInputPassword1" class="form-label">Password</label>
                     <input type="password" v-model="password" class="form-control" id="exampleInputPassword1" required>
                 </div>
+                <div class="mb-3">
+                    <label for="exampleInputPassword2" class="form-label">Confirm password
+                        <span v-if="confirm_password_sign === true && confirm_password !== ''"><i class="fas fa-check"></i></span>
+                    </label>
+                    <input type="password" v-model="confirm_password" class="form-control" id="exampleInputPassword2" required>
+                </div>
                 
                 
 
@@ -84,9 +90,21 @@ export default {
             username:'',
             email:'',
             password:'',
+            confirm_password:'',
+            confirm_password_sign:false,
             errors:[]
         }
 
+    },
+    watch:{
+        confirm_password: function(value){
+            if(value === this.password){
+                this.confirm_password_sign = true
+            }
+            else{
+                this.confirm_password_sign = false
+            }
+        }
     },
     methods:{
         async submit(){
@@ -139,5 +157,8 @@ h2{
 }
 .info{
   color:crimson
+}
+.fa-check{
+    color: rgb(128, 255, 0);
 }
 </style>
