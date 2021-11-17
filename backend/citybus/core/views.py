@@ -81,7 +81,7 @@ def check(request):
 def route_details(request):
     obj = RouteDetails.objects.all()
     
-    print(now)
+    
     serializers = RouteDetailsSerializer(obj,many=True)
     return Response({"status": "success", "data": serializers.data}, status=status.HTTP_200_OK)
 
@@ -93,41 +93,32 @@ def route_name(request):
     serializers = RouteSerializer(obj,many=True)
     return Response({"status": "success", "data": serializers.data}, status=status.HTTP_200_OK)
 
-
-@api_view(['GET','POST','PUT'])
-def ticket(request):
-
+@api_view(['GET'])
+def signle_ticket(request,user_id):
     if request.method == 'GET':
-        user_id = request.user.id
+
         
-        obj = Ticket.objects.filter(user__id__exact = user_id )
+        print(user_id)
+        obj = Ticket.objects.filter(user_id__id = user_id )
+        print(obj)
         if obj:
             serializers = TicketSerializer(obj,many=True)
             return Response({"status": "success", "data":serializers.data}, status=status.HTTP_200_OK)
         else:
             return Response({"status": "success", "data":"There is no ticket yet"}, status=status.HTTP_200_OK)
+
+@api_view(['POST','PUT'])
+def ticket(request):
+
+    
     if request.method == 'POST':
-        # now = datetime.datetime.now().strftime('%I:%M %p')
-        user_id = request.user.id
-        pickup = request.data['pickup']
-        destination = request.data['destination']
-        time = request.data['time']
-        
-        # print(now>time)
-
-        data = {
-            'user':user_id,
-            'pickup':pickup,
-            'destination':destination,
-            'time':time
-        }
-        
-
-        serializers = TicketSerializer(data=data)
+        serializers = TicketSerializer(data=request.data)
         if serializers.is_valid():
             serializers.save()
             return Response(serializers.data, status=status.HTTP_201_CREATED)
-        return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
+        else:
+          return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
     if request.method == 'PUT':
         now = datetime.datetime.now().strftime('%I:%M %p')

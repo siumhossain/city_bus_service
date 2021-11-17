@@ -87,7 +87,7 @@
                     
                   </td>
                   <td>
-                    <button @click="confirm(des.name_of_route,des.time)" v-if='$store.state.user !== null' class="btn btn-primary">
+                    <button @click="confirm(des.name_of_bus,des.name_of_route,des.time)" v-if='$store.state.user !== null' class="btn btn-primary">
                       Confirm
                     </button>
                     <button v-else class="btn btn-primary" disabled>
@@ -148,6 +148,7 @@ export default {
       table:false,
       pick_obj:[],
       destination:{},
+      
       
       
       
@@ -224,9 +225,11 @@ export default {
       console.log('click')
       
     },
-    confirm(destination,time){
+    confirm(busname,destination,time){
       const data = {
+        user:this.$store.state.user.id,
         pickup:this.pickup,
+        busname:busname,
         destination:destination,
         time:time
       }

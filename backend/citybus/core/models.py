@@ -94,6 +94,7 @@ class Ticket(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE)
     pickup = models.CharField(max_length=500)
     destination = models.CharField(max_length=500)
+    busname = models.CharField(default='',max_length=500)
     time = models.TimeField()
     created = models.DateTimeField(auto_now=True)
 

@@ -73,7 +73,15 @@
                 
                 
 
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <button v-if="is_loading === false" type="submit" class="btn btn-primary">Submit</button>
+                <button v-if="is_loading === true" class="btn btn-primary" type="button" disabled>
+                    <span
+                        class="spinner-border spinner-border-sm"
+                        role="status"
+                        aria-hidden="true"
+                    ></span>
+                    <span class="visually-hidden">Submitting...</span>
+                </button>
             </form>
             
         </div>
@@ -92,7 +100,8 @@ export default {
             password:'',
             confirm_password:'',
             confirm_password_sign:false,
-            errors:[]
+            errors:[],
+            is_loading:false
         }
 
     },
@@ -108,6 +117,7 @@ export default {
     },
     methods:{
         async submit(){
+            this.is_loading = true
             let _this = this
             const formdata = {
                 first_name:this.first_name,
@@ -121,6 +131,7 @@ export default {
             await axios.post('api/auth/users/',formdata)
             .then(res =>{
                 console.log(res)
+                this.is_loading = false
                 
                 this.$router.push('/login')
             })

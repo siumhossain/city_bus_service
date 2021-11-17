@@ -52,7 +52,15 @@
 
                 </div>
 
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <button v-if="is_loading === false" type="submit" class="btn btn-primary">Submit</button>
+                <button v-if="is_loading === true" class="btn btn-primary" type="button" disabled>
+                    <span
+                        class="spinner-border spinner-border-sm"
+                        role="status"
+                        aria-hidden="true"
+                    ></span>
+                    <span class="visually-hidden">Submitting...</span>
+                </button>
             </form>
             
         </div>
@@ -74,11 +82,13 @@ export default {
         return{
             username:'',
             password:'',
-            errors:[]
+            errors:[],
+            is_loading:false
         }
     },
     methods:{
         async submit(){
+            this.is_loading = true
             const formdata = {
                 username:this.username,
                 password:this.password
@@ -89,6 +99,7 @@ export default {
             this.errors = [];
             await axios.post('api/auth/token/login/',formdata)
             .then(res => {
+                this.is_loading = false
                 const token = res.data['auth_token']
                 // this.$store.dispatch('user',res.data)
                 localStorage.setItem('token',token)

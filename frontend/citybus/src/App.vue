@@ -30,11 +30,7 @@
             <b>Hi! {{$store.state.user.username}} 🙋</b> 
           </li>
           
-          <li v-if='this.$store.state.user === null' class="nav-item px-2 me-1 py-2">
-            <router-link to='/login'>
-            <button class="btn btn-primary">Login</button>
-            </router-link>
-          </li>
+          
           <li v-if="this.$store.state.user !== null" class="nav-item px-2 me-1 py-3">
             <router-link to='/apply'><b>Apply for 50% off</b></router-link>
           </li>
@@ -43,6 +39,11 @@
           </li>
           <li v-if="this.$store.state.user !== null" class="nav-item px-2 me-1 py-2">
             <button v-on:click='logout' class="btn btn-primary">Log out</button>
+          </li>
+          <li v-if='this.$store.state.user === null' class="nav-item px-2 me-1 py-2">
+            <router-link to='/login'>
+            <button class="btn btn-primary">Login</button>
+            </router-link>
           </li>
 
           

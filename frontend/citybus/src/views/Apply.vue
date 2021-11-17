@@ -6,7 +6,7 @@
             <h3>Are you freedom fighter, student or disabled?</h3>
             <b>We offer you 50% off ❤️</b>
             <br>
-            <small class="muted">Please submit your file for verification [Ex: Freedom fighter certificate, Academic transcript etc ]</small>
+            <small class="muted">Please submit your file for verification [ Ex: Freedom fighter certificate, Academic transcript etc ]</small>
         </div>
         <div class="card-body">
             
@@ -26,7 +26,7 @@
                     
                 </div>
                 <div class="mb-3">
-                    <label for="exampleFormControlTextarea1">Want to say something?</label>
+                    <label class="form-label" for="exampleFormControlTextarea1">Want to say something?</label>
                     <textarea v-model='message' class="form-control my-2" id="exampleFormControlTextarea1" rows="3"></textarea>
                 </div>
                 

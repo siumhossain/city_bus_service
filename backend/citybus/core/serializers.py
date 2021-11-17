@@ -71,7 +71,7 @@ class TicketSerializer(serializers.ModelSerializer):
     time = serializers.TimeField(format="%I:%M %p")
     class Meta:
         model = Ticket
-        fields = ['id','pickup','destination','time','created']
+        fields = ['id','user','busname','pickup','destination','time','created']
 
 class FileSerializer(serializers.ModelSerializer):
     class Meta:
