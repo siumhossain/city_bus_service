@@ -1,7 +1,8 @@
 from django.contrib import admin
+from django.contrib.admin.decorators import action
+from django.http import HttpResponse
 
-
-from .models import Album, ApplyHalf, BusCompany, Bus, Fileup, Route, RouteDetails, Ticket, TimeSlot, Track, User  
+from .models import Album, Announcement, ApplyHalf, BusCompany, Bus, Fileup, Review, Route, RouteDetails, Ticket, TimeSlot, Track, User, UserEmail  
 # Register your models here.
 
 
@@ -12,11 +13,30 @@ admin.site.register(Route)
 
 
 admin.site.register(Bus)
-admin.site.register(Ticket)
-admin.site.register(TimeSlot)
+
+
+class TicketAdmin(admin.ModelAdmin):
+    search_fields = ("pickup__startswith","destination__startswith" )
+    list_filter = ("created","time","busname")
+     
+class TimeSlotAdmin(admin.ModelAdmin):
+    search_fields = ("bus_name__startswith","bus_at_now__startswith" )
+    list_filter = ("time","bus_name","bus_at_now")
+
+admin.site.register(Ticket,TicketAdmin)
+
+
+admin.site.register(TimeSlot,TimeSlotAdmin)
 admin.site.register(RouteDetails)
 admin.site.register(Fileup)
 admin.site.register(ApplyHalf)
+admin.site.register(Review)
+admin.site.register(Announcement)
+admin.site.register(UserEmail)
+
+
+
+
 
 
 

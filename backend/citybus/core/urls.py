@@ -12,5 +12,8 @@ urlpatterns = [
    path('check/',views.check),
    path('fileup/',views.FileUpload.as_view()),
    path('apply_half/',views.apply_half),
+   path('review_limit/',views.review_limit),
+   path('review_all/',views.review_all),
+   path('review_post/',views.review_post),
 
 ]

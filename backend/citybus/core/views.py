@@ -5,10 +5,10 @@ from rest_framework.views import APIView
 from rest_framework.parsers import FileUploadParser
 
 from core import serializers
-from .models import Album, Route, RouteDetails, Ticket, TimeSlot
+from .models import Album, Review, Route, RouteDetails, Ticket, TimeSlot
 from django.db.models import Q
 from rest_framework import status,viewsets
-from .serializers import AlbumSerializer, ApplyHalfSerializer, FileSerializer, RouteSerializer, TicketSerializer, TimeSlotSerializer,RouteDetailsSerializer
+from .serializers import AlbumSerializer, ApplyHalfSerializer, FileSerializer, ReviewSerializer, RouteSerializer, TicketSerializer, TimeSlotSerializer,RouteDetailsSerializer
 from geopy import distance
 import datetime
 
@@ -125,11 +125,16 @@ def ticket(request):
         ticket_id = request.data['id']
         time = request.data['time']
         obj = Ticket.objects.get(id=ticket_id)
-        if request.user.is_authenticated:
-            obj.delete()
-            return Response("ok_clear", status=status.HTTP_200_OK)
+        print(time>now)
+        if(time>now):
+            return Response("It can't be done now", status=status.HTTP_400_BAD_REQUEST)
         else:
-            return Response("you have to be logged in ", status=status.HTTP_200_OK)
+
+            if request.user.is_authenticated:
+                obj.delete()
+                return Response("ok_clear", status=status.HTTP_200_OK)
+            else:
+                return Response("you have to be logged in ", status=status.HTTP_200_OK)
 
 
 class FileUpload(APIView):
@@ -155,8 +160,37 @@ def apply_half(request):
 
 
 
+@api_view(['GET'])
+def review_limit(request):
+    if request.method == 'GET':
+        obj = Review.objects.all()[:5]
+        if obj:
+            serializers = ReviewSerializer(obj,many=True)
+            return Response(serializers.data, status=status.HTTP_200_OK)
+        else:
+            return Response('Sorry,nothing found', status=status.HTTP_400_BAD_REQUEST)
 
+@api_view(['GET'])
+def review_all(request):
+    if request.method == 'GET':
+        obj = Review.objects.all()
+        if obj:
+            serializers = ReviewSerializer(obj,many=True)
+            return Response(serializers.data, status=status.HTTP_200_OK)
+        else:
+            return Response('Sorry,nothing found', status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+def review_post(request):
+    if request.method == 'POST':
+        serializers = ReviewSerializer(data=request.data)
+        if serializers.is_valid():
+            serializers.save()
+            return Response(serializers.data, status=status.HTTP_200_OK)
+        else:
+            return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
         
+
 
 
 

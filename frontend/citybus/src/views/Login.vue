@@ -122,7 +122,7 @@ export default {
                 //console.log(error.response.data);
                 _this.errors = error.response
                 console.log(_this.errors)
-                
+                _this.is_loading = false
                 
                 
                 

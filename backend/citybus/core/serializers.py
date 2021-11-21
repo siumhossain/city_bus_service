@@ -1,7 +1,7 @@
 from django.db import models
 from django.db.models import fields
 from rest_framework import serializers
-from .models import ApplyHalf, Bus, Fileup, RouteDetails, Ticket, TimeSlot,Route,Album,Track
+from .models import ApplyHalf, Bus, Fileup, Review, RouteDetails, Ticket, TimeSlot,Route,Album,Track
 
 
 
@@ -82,3 +82,14 @@ class ApplyHalfSerializer(serializers.ModelSerializer):
     class Meta:
         model = ApplyHalf
         fields = ['user','message','file','created']
+
+
+class ReviewSerializer(serializers.ModelSerializer):
+    
+    user_name = serializers.SerializerMethodField()
+
+    def get_user_name(self,obj):
+        return obj.user.username
+    class Meta:
+        model = Review
+        fields = ['id','user','user_name','review','created']

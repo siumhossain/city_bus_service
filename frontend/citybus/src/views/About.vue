@@ -1,6 +1,6 @@
 <template>
   
-  
+  <h1 class="display1 text-center my-5">About is now under construction ⛑🚧</h1>
 </template>
 <style>
 .navbar-brand{

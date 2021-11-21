@@ -8,12 +8,20 @@ from django.conf import settings
 from django.core.mail import send_mail
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 geolocator = Nominatim(user_agent="city_bus")
+
+class UserEmail(models.Model):
+    email = models.EmailField()
+
+    def __str__(self):
+        return self.email
 # Create your models here.
 class User(AbstractUser):
     def save(self,*args,**kwargs):
-
+        UserEmail.objects.create(email = self.email)
         subject = 'welcome to Sohochor'
         message = f'Hi 🙋 {self.username}, Thank you for registering in Sohochor. We always wish you safe journey . Please stay with us 🥰'
         email_from = settings.EMAIL_HOST_USER
@@ -141,6 +149,33 @@ class ApplyHalf(models.Model):
         ordering = ['-created']
 
 
+class Review(models.Model):
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    review = models.TextField()
+    created = models.DateTimeField(auto_now=True,blank=True)
+
+    class Meta:
+        ordering = ['-created']
+
 
     
+class Announcement(models.Model):
+    message = models.TextField(null=True,blank=True)
+    created = models.DateTimeField(auto_now=True)
+
+    def save(self,*args,**kwargs):
+        recievers = []
+        for user in UserEmail.objects.all():
+            recievers.append(user.email)
+        subject = 'Announcement from Sohochor'
+        message = self.message
+        email_from = settings.EMAIL_HOST_USER
+        send_mail(subject, message, email_from, recievers)
+        super().save(*args,**kwargs) 
+    
+
+    class Meta:
+        ordering = ['-created']
+
+
     

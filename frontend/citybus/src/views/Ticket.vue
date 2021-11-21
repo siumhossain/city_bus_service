@@ -6,12 +6,54 @@
             </div>
 
         </div>
+        <div class="row">
+                <div class="center">
+                
+                <button @click="review()" class="btn btn-dark">Please tell us about your journey 🗣</button>
+                <br>
+                
+            </div>
+            
+        </div>
+        <div v-if='show' class="row my-3">
+            <div class="form-group">
+                 <label for="exampleFormControlTextarea1">Submit your review</label>
+                <textarea v-model='message' class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                
+                <button v-if='button === false' @click="submit()" class="btn btn-primary mt-2">Submit</button>
+                <button v-if='button' class="btn btn-primary" type="button" disabled>
+                    <span
+                        class="spinner-border spinner-border-sm"
+                        role="status"
+                        aria-hidden="true"
+                    ></span>
+                     Submitting...
+                </button>
+                
+            </div>
+        </div>
+        <div class="row text-center my-3">
+            <div v-if='thankyou' class="display-5"><b>Thank you!! for your valuable reply 😻</b></div>
+        </div>
     </div>    
 
-    <div class="container">   
-        <div class="row">
+    
+    <div v-if='ticketNull' class="contianer">
+        <h1 class="display-5 text-center mt-5">There is no ticket yet 🤷</h1>
+    </div>
+    
+
+    <div  v-else class="container">   
+        
+            
+            
+
+
+
+
             
             <table class="table mx-2 mt-3 mb-5">
+                
             <thead>
                 <tr>
                 <th scope="col">Bus name</th>
@@ -40,8 +82,13 @@
             </tbody>
             </table>
             
+            
         </div>
-    </div>
+        
+        
+        <router-view></router-view>
+        
+   
 </template>
 <script>
 import axios from 'axios'
@@ -49,16 +96,31 @@ export default {
 
     data(){
         return{
-            ticket_obj:{}
+            ticket_obj:[],
+            show:false,
+            message:'',
+            thankyou:false,
+            button:false,
+            blank:false,
+            tickeNull:false,
         }
     },
 
-    async mounted() {
+    async created() {
+        console.log(this.tickeNull)
         const id = this.$store.state.user.id
         await axios.get(`api/single_ticket/${id}`)
         .then(res => {
             console.log(res.data)
-            this.ticket_obj = res.data['data']
+            if(res.data['data'] !== 'There is no ticket yet'){
+                this.ticket_obj = res.data['data']
+
+            }
+            else{
+                this.ticket_obj = []
+                this.tickeNull = true
+            }
+            
         })
     },
     methods:{
@@ -73,19 +135,52 @@ export default {
             await axios.put('/api/ticket/',data)
             .then(res => {
                 console.log(res)
-                const id = this.$store.state.user.id
-                axios.get(`api/single_ticket/${id}`)
-                .then(res => {
-                    this.ticket_obj = res.data['data']
+                this.ticket_obj = this.ticket_obj.filter((ticket) => ticket.id !==id)
+                console.log(this.ticket_obj.length)
+                if(this.ticket_obj.length === 0){
+                    this.tickeNull = true
+                }
+                // const id = this.$store.state.user.id
+                // axios.get(`api/single_ticket/${id}`)
+                // .then(res => {
+                //     if(res.data['data'] !== 'There is no ticket yet'){
 
-                })
+                //         this.ticket_obj = res.data['data']
+
+                //     }
+                //     else{
+                //         this.blank = true
+                //     }
+                    
+
+                // })
                 
             })
             //console.log(data)
+        },
+        review(){
+            this.show = !this.show
+        },
+        async submit(){
+            this.button = true
+            const data = {
+                user:this.$store.state.user.id,
+                review: this.message
+            }
+            await axios.post('api/review_post/',data)
+            .then(res => {
+                console.log(res)
+                this.thankyou = true
+                this.show = false 
+                this.button = false
+            })
+            .then(err => {
+                console.log(err)
+            })
         }
     }
 }
 </script>
 <style >
-    
+ 
 </style>

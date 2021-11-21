@@ -29,13 +29,16 @@
           <li v-if="this.$store.state.user !== null" class="nav-item px-2 me-1 py-3">
             <b>Hi! {{$store.state.user.username}} 🙋</b> 
           </li>
+          <li v-if="this.$store.state.user !== null" class="nav-item px-2 me-1 py-3">
+            <router-link to='/ticket'><b>Ticket</b></router-link>
+          </li>
           
           
           <li v-if="this.$store.state.user !== null" class="nav-item px-2 me-1 py-3">
             <router-link to='/apply'><b>Apply for 50% off</b></router-link>
           </li>
           <li class="nav-item px-2 me-1 py-3">
-            <router-link to='/about'>About</router-link>
+            <router-link to='/about'><b>About</b> </router-link>
           </li>
           <li v-if="this.$store.state.user !== null" class="nav-item px-2 me-1 py-2">
             <button v-on:click='logout' class="btn btn-primary">Log out</button>
@@ -100,8 +103,7 @@ export default {
 }
 </script>
 
-<style>
-
+<style >
 .navbar-brand{
   font-size: 1.5rem;
   font-weight: 900;
@@ -124,7 +126,9 @@ a{
   color: Black;
 }
 
+</style>>
 
 
 
-</style>
+
+
