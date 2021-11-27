@@ -1,7 +1,7 @@
 from django.db import models
 from django.db.models import fields
 from rest_framework import serializers
-from .models import ApplyHalf, Bus, Fileup, Review, RouteDetails, Ticket, TimeSlot,Route,Album,Track
+from .models import ApplyHalf, Blog, Bus, Fileup, Review, RouteDetails, Ticket, TimeSlot,Route,Album,Track
 
 
 
@@ -93,3 +93,15 @@ class ReviewSerializer(serializers.ModelSerializer):
     class Meta:
         model = Review
         fields = ['id','user','user_name','review','created']
+
+
+class BlogViewSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Blog
+        fields=['id','title','short_description','created']
+
+class BlogDetailsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Blog
+        fields = ['id','title','short_description','content','created']
+

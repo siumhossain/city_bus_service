@@ -55,7 +55,7 @@
         </div>
         <div class="row for-form">
           <div class="col-lg-10">
-            <table v-if='table' class="table align-middle">
+            <table v-if='table && load===false' class="table align-middle">
               <thead>
                 <tr>
                   <th scope="col">Bus</th>
@@ -87,10 +87,11 @@
                     
                   </td>
                   <td>
-                    <button @click="confirm(des.name_of_bus,des.name_of_route,des.time)" v-if='$store.state.user !== null' class="btn btn-primary">
+                    <button @click="confirm(des.name_of_bus,des.name_of_route,des.time)" v-if='$store.state.user !== null && load===false' class="btn btn-primary">
                       Confirm
                     </button>
-                    <button v-else class="btn btn-primary" disabled>
+                    
+                    <button v-if='$store.state.user === null' class="btn btn-primary" disabled>
                       Confirm
                     </button>
 
@@ -102,6 +103,14 @@
                 
               </tbody>
             </table>
+
+            
+
+            <div v-if='load === true' class="d-flex justify-content-center my-4">
+              <div class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+            </div>
 
           </div>
         </div>
@@ -290,6 +299,7 @@ export default {
       table:false,
       pick_obj:[],
       destination:{},
+      load:false,
       
       
       
@@ -368,6 +378,7 @@ export default {
       
     },
     confirm(busname,destination,time){
+      this.load = true
       const data = {
         user:this.$store.state.user.id,
         pickup:this.pickup,
@@ -379,6 +390,7 @@ export default {
       axios.post('api/ticket/',data)
       .then(res => {
         console.log(res.data)
+        this.load = false
         this.$router.push('/ticket')
       })
       
@@ -427,4 +439,6 @@ li { cursor: pointer; }
   align-items: center;
   
 }
+
+
 </style>

@@ -5,12 +5,14 @@ from rest_framework.views import APIView
 from rest_framework.parsers import FileUploadParser
 
 from core import serializers
-from .models import Album, Review, Route, RouteDetails, Ticket, TimeSlot
+from .models import Album, Blog, Review, Route, RouteDetails, Ticket, TimeSlot
 from django.db.models import Q
 from rest_framework import status,viewsets
-from .serializers import AlbumSerializer, ApplyHalfSerializer, FileSerializer, ReviewSerializer, RouteSerializer, TicketSerializer, TimeSlotSerializer,RouteDetailsSerializer
+from .serializers import AlbumSerializer, ApplyHalfSerializer, BlogDetailsSerializer, BlogViewSerializer, FileSerializer, ReviewSerializer, RouteSerializer, TicketSerializer, TimeSlotSerializer,RouteDetailsSerializer
 from geopy import distance
 import datetime
+from django.core.mail import EmailMultiAlternatives
+from django.conf import settings
 
 @api_view(['GET'])
 def home(request,**kwargs):
@@ -106,6 +108,7 @@ def signle_ticket(request,user_id):
             return Response({"status": "success", "data":serializers.data}, status=status.HTTP_200_OK)
         else:
             return Response({"status": "success", "data":"There is no ticket yet"}, status=status.HTTP_200_OK)
+from django.template.loader import render_to_string 
 
 @api_view(['POST','PUT'])
 def ticket(request):
@@ -114,6 +117,33 @@ def ticket(request):
     if request.method == 'POST':
         serializers = TicketSerializer(data=request.data)
         if serializers.is_valid():
+            print(request.user.email)
+            pickup = request.data['pickup']
+            destination = request.data['destination']
+            busName = request.data['busname']
+            time = request.data['time']
+            # serializers.save()
+            # subject, from_email, to = 'Your purchashed ticket information', settings.EMAIL_HOST_USER, request.user.email
+            # message = "<p>This is an <strong>important</strong> message.</p>"
+
+            # html_content = message
+            # msg = EmailMultiAlternatives(subject,from_email, [to])
+            # msg.attach_alternative(html_content, "text/html")
+            # msg.send()
+            subject, from_email, to = 'Ticket information from Sohochor', settings.EMAIL_HOST_USER, request.user.email
+            html = './ticket.html'
+            html_msg = render_to_string(html,{
+                'pickup':pickup,
+                'destination':destination,
+                'busname':busName,
+                'time':time
+            })
+            
+            
+            msg = EmailMultiAlternatives(subject,html_msg,from_email, [to])
+            msg.content_subtype = 'html'
+            msg.send()
+            print('email_send')
             serializers.save()
             return Response(serializers.data, status=status.HTTP_201_CREATED)
         else:
@@ -191,7 +221,26 @@ def review_post(request):
             return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
         
 
+@api_view(['GET'])
+def blogview(request):
+    if request.method == 'GET':
+        obj = Blog.objects.all()
+        if obj:
+            serializers = BlogViewSerializer(obj,many=True)
+            return Response(serializers.data, status=status.HTTP_200_OK)
+        else:
+            return Response('Sorry,nothing found', status=status.HTTP_400_BAD_REQUEST)
 
+@api_view(['GET'])
+def blogDetails(request,id):
+    if request.method == 'GET':
+        obj = Blog.objects.get(id=id)
+        if obj:
+            serializers = BlogDetailsSerializer(obj)
+        
+            return Response(serializers.data,status=status.HTTP_200_OK)
+        else:
+            return Response('Sorry,nothing found', status=status.HTTP_404_NOT_FOUND)
 
 
 

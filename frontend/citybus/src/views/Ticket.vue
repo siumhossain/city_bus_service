@@ -1,12 +1,17 @@
 <template >
-    <div class="container">
-        <div class="row">
+    <div class="row">
+        <div class="container">
             <div class="row mt-4 mb-2 text-center">
                 <h3 class="display-5">Your purchased ticket history</h3>
             </div>
 
         </div>
-        <div class="row">
+        
+
+    </div>
+    <div class="row">
+        <div class="container">
+            <div class="row">
                 <div class="center">
                 
                 <button @click="review()" class="btn btn-dark">Please tell us about your journey 🗣</button>
@@ -15,8 +20,14 @@
             </div>
             
         </div>
-        <div v-if='show' class="row my-3">
-            <div class="form-group">
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="container">
+            <div v-if='show' class="my-3">
+                <div class="container">
+                    <div class="form-group">
                  <label for="exampleFormControlTextarea1">Submit your review</label>
                 <textarea v-model='message' class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
                 
@@ -31,11 +42,19 @@
                 </button>
                 
             </div>
+
+                </div>
+            
         </div>
-        <div class="row text-center my-3">
-            <div v-if='thankyou' class="display-5"><b>Thank you!! for your valuable reply 😻</b></div>
         </div>
-    </div>    
+    </div>
+    <div class="row">
+            <div class="text-center my-3">
+                <div v-if='thankyou' class="display-5"><b>Thank you!! for your valuable reply 😻</b></div>
+            </div>
+
+        </div>
+        
 
     
     <div v-if='ticketNull' class="contianer">
@@ -107,7 +126,7 @@ export default {
     },
 
     async created() {
-        console.log(this.tickeNull)
+        console.log(this.ticket_obj)
         const id = this.$store.state.user.id
         await axios.get(`api/single_ticket/${id}`)
         .then(res => {

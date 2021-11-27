@@ -15,5 +15,7 @@ urlpatterns = [
    path('review_limit/',views.review_limit),
    path('review_all/',views.review_all),
    path('review_post/',views.review_post),
+   path('blog/',views.blogview),
+   path('blog/<str:id>/',views.blogDetails),
 
 ]

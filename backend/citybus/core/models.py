@@ -6,10 +6,11 @@ from geopy.geocoders import Nominatim
 from django.db.models import Q
 from django.conf import settings
 from django.core.mail import send_mail
-from django.db.models.signals import post_save
+
 from django.dispatch import receiver
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from tinymce.models import HTMLField
 
 geolocator = Nominatim(user_agent="city_bus")
 
@@ -158,7 +159,8 @@ class Review(models.Model):
         ordering = ['-created']
 
 
-    
+from django.template.loader import render_to_string  
+from django.core.mail import EmailMultiAlternatives  
 class Announcement(models.Model):
     message = models.TextField(null=True,blank=True)
     created = models.DateTimeField(auto_now=True)
@@ -167,12 +169,29 @@ class Announcement(models.Model):
         recievers = []
         for user in UserEmail.objects.all():
             recievers.append(user.email)
-        subject = 'Announcement from Sohochor'
+        
+        subject, from_email, to ='Announcement from Sohochor', settings.EMAIL_HOST_USER, recievers
         message = self.message
-        email_from = settings.EMAIL_HOST_USER
-        send_mail(subject, message, email_from, recievers)
+        
+        
+        msg = EmailMultiAlternatives(subject,message,from_email, to)
+        
+        msg.send()
         super().save(*args,**kwargs) 
     
+
+    class Meta:
+        ordering = ['-created']
+
+
+class Blog(models.Model):
+    title = models.CharField(max_length=300)
+    short_description = models.TextField()
+    content = HTMLField()
+    created = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.title
 
     class Meta:
         ordering = ['-created']
