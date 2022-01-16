@@ -5,10 +5,10 @@ from rest_framework.views import APIView
 from rest_framework.parsers import FileUploadParser
 
 from core import serializers
-from .models import Album, Blog, Review, Route, RouteDetails, Ticket, TimeSlot
+from .models import Album, Blog, Review, Route, RouteDetails, StaffInfo, Ticket, TimeSlot
 from django.db.models import Q
 from rest_framework import status,viewsets
-from .serializers import AlbumSerializer, ApplyHalfSerializer, BlogDetailsSerializer, BlogViewSerializer, FileSerializer, ReviewSerializer, RouteSerializer, TicketSerializer, TimeSlotSerializer,RouteDetailsSerializer
+from .serializers import AlbumSerializer, ApplyHalfSerializer, BlogDetailsSerializer, BlogViewSerializer, FileSerializer, ReviewSerializer, RouteSerializer, StaffInfoSerializer, TicketSerializer, TimeSlotSerializer,RouteDetailsSerializer
 from geopy import distance
 import datetime
 from django.core.mail import EmailMultiAlternatives
@@ -33,7 +33,7 @@ def pickup(request):
     try:
         result = TimeSlot.objects.filter(
 
-            Q(bus_at_now__name__icontains = location) & Q(station_serial__exact=1)).distinct()[:3]
+            Q(bus_at_now__name__icontains = location) & Q(station_serial__exact=1)).distinct()
         print(result)
         serializers = TimeSlotSerializer(result,many=True)
         return Response({"status": "success", "data": serializers.data}, status=status.HTTP_200_OK)
@@ -243,6 +243,23 @@ def blogDetails(request,id):
             return Response('Sorry,nothing found', status=status.HTTP_404_NOT_FOUND)
 
 
+@api_view(['GET'])
+def staffInfo(request):
+    if request.method == 'GET':
+        obj = StaffInfo.objects.all()
+        serializers = StaffInfoSerializer(obj,many=True)
+        return Response(serializers.data,status=status.HTTP_200_OK)
+import requests
+
+def verification(request,uid,token):
+    print('hi')
+    protocol = 'https://' if request.is_secure() else 'http://'
+    web_url = protocol + request.get_host()
+    post_url = web_url + "api/auth/users/activate/"
+    post_data = {'uid': uid, 'token': token}
+    result = requests.post(post_url, data = post_data)
+    print('hi')
+    return JsonResponse(result)
 
 
 

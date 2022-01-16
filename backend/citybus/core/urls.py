@@ -18,4 +18,8 @@ urlpatterns = [
    path('blog/',views.blogview),
    path('blog/<str:id>/',views.blogDetails),
 
+   path('staffInfo/',views.staffInfo),
+   path('#/activate/<str:uid>/<str:token>',views.verification)
+   # http://127.0.0.1:8000/#/activate/MjE/azampi-179e3fbbf8aa90d8b30005652f03cbdf
+
 ]

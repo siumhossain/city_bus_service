@@ -40,6 +40,9 @@
           <li class="nav-item px-2 me-1 py-3">
             <router-link to='/about'><b>About</b> </router-link>
           </li>
+          <li class="nav-item px-2 me-1 py-3">
+            <router-link to='/staffInfo'><b>Staff info</b> </router-link>
+          </li>
           <li v-if="this.$store.state.user !== null" class="nav-item px-2 me-1 py-2">
             <button v-on:click='logout' class="btn btn-primary">Log out</button>
           </li>

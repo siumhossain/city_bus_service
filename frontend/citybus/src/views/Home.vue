@@ -87,9 +87,56 @@
                     
                   </td>
                   <td>
-                    <button @click="confirm(des.name_of_bus,des.name_of_route,des.time)" v-if='$store.state.user !== null && load===false' class="btn btn-primary">
+
+
+                    <button type="button" class="btn btn-primary" data-mdb-toggle="modal" data-mdb-target="#exampleModal">
+                      confirm
+          </button>
+
+<!-- Modal -->
+              <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title text-center" id="exampleModalLabel">Purchase confirmation</h5>
+                      <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      <img
+                        src="@/assets/bkash.png"
+                        class="img-thumbnail"
+                        alt="Hollywood Sign on The Hill"
+                        width="70" height="70"
+                      />
+                      <img
+                        src="@/assets/rocket.png"
+                        class="img-thumbnail mx-2"
+                        alt="Hollywood Sign on The Hill"
+                        width="70" height="70"
+                      />
+                      <img
+                        src="@/assets/visa.png"
+                        class="img-thumbnail mx-2"
+                        alt="Hollywood Sign on The Hill"
+                        width="70" height="70"
+                      />
+                    
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-danger" data-mdb-dismiss="modal">Close</button>
+                      
+                      <button @click="confirm(des.name_of_bus,des.name_of_route,des.time)" v-if='$store.state.user !== null && load===false' class="btn btn-primary">
                       Confirm
                     </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+                    <!-- <button @click="confirm(des.name_of_bus,des.name_of_route,des.time)" v-if='$store.state.user !== null && load===false' class="btn btn-primary">
+                      Confirm
+                    </button> -->
                     
                     <button v-if='$store.state.user === null' class="btn btn-primary" disabled>
                       Confirm
@@ -103,6 +150,11 @@
                 
               </tbody>
             </table>
+
+          
+
+
+
 
             
 
@@ -197,8 +249,7 @@
             <i class="fas fa-gem me-3"></i>Sohochor
           </h6>
           <p>
-            Here you can use rows and columns to organize your footer content. Lorem ipsum
-            dolor sit amet, consectetur adipisicing elit.
+            Make your journey comfortable with us. Please stay with us and be safe.
           </p>
         </div>
         <!-- Grid column -->
@@ -207,42 +258,23 @@
         <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
           <!-- Links -->
           <h6 class="text-uppercase fw-bold mb-4">
-            Products
+            Service
           </h6>
           <p>
-            <a href="#!" class="text-reset">Vue3</a>
+            <a href="#!" class="text-reset">e-ticket</a>
           </p>
           <p>
-            <a href="#!" class="text-reset">Django</a>
+            <a href="#!" class="text-reset">metro service</a>
           </p>
           <p>
-            <a href="#!" class="text-reset">MaterialDesign</a>
+            <a href="#!" class="text-reset">comfortable journey</a>
           </p>
-          <p>
-            <a href="#!" class="text-reset">Django rest</a>
-          </p>
+          
         </div>
         <!-- Grid column -->
 
         <!-- Grid column -->
-        <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
-          <!-- Links -->
-          <h6 class="text-uppercase fw-bold mb-4">
-            Useful links
-          </h6>
-          <p>
-            <a href="#!" class="text-reset">Pricing</a>
-          </p>
-          <p>
-            <a href="#!" class="text-reset">Settings</a>
-          </p>
-          <p>
-            <a href="#!" class="text-reset">Orders</a>
-          </p>
-          <p>
-            <a href="#!" class="text-reset">Help</a>
-          </p>
-        </div>
+        
         <!-- Grid column -->
 
         <!-- Grid column -->
@@ -251,13 +283,13 @@
           <h6 class="text-uppercase fw-bold mb-4">
             Contact
           </h6>
-          <p><i class="fas fa-home me-3"></i> New York, NY 10012, US</p>
+          <p><i class="fas fa-home me-3"></i> Sewrapara, Road 12: block A</p>
           <p>
             <i class="fas fa-envelope me-3"></i>
-            info@example.com
+            info@sohochor.com
           </p>
-          <p><i class="fas fa-phone me-3"></i> + 01 234 567 88</p>
-          <p><i class="fas fa-print me-3"></i> + 01 234 567 89</p>
+          <p><i class="fas fa-phone me-3"></i> + 017 XXX XXX</p>
+          <p><i class="fas fa-print me-3"></i> + 017 XXX XXX</p>
         </div>
         <!-- Grid column -->
       </div>

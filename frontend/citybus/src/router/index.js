@@ -72,6 +72,22 @@ const routes = [
     // which is lazy-loaded when the route is visited.
     component: () => import('../views/BlogDetails')
   },
+  {
+    path: '/map',
+    name: 'Map',
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import('../views/Map.vue')
+  },
+  {
+    path: '/staffInfo',
+    name: 'StaffInfo',
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import('../views/StaffInfo.vue')
+  },
   
 
 ]

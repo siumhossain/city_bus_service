@@ -197,4 +197,14 @@ class Blog(models.Model):
         ordering = ['-created']
 
 
+class StaffInfo(models.Model):
+    user = models.ForeignKey('User',on_delete=models.CASCADE)
+    bus_company = models.ForeignKey('Bus',on_delete=models.CASCADE)
+    salary = models.IntegerField()
+    description = HTMLField()
+
+    def __str__(self):
+        return self.user.username
+
+
     

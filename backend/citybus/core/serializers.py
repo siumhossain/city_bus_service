@@ -1,7 +1,7 @@
 from django.db import models
 from django.db.models import fields
 from rest_framework import serializers
-from .models import ApplyHalf, Blog, Bus, Fileup, Review, RouteDetails, Ticket, TimeSlot,Route,Album,Track
+from .models import ApplyHalf, Blog, Bus, Fileup, Review, RouteDetails, Ticket, TimeSlot,Route,Album,Track,StaffInfo
 
 
 
@@ -71,7 +71,7 @@ class TicketSerializer(serializers.ModelSerializer):
     time = serializers.TimeField(format="%I:%M %p")
     class Meta:
         model = Ticket
-        fields = ['id','user','busname','pickup','destination','time','created']
+        fields = ['id','user','busname','pickup','destination','time',]
 
 class FileSerializer(serializers.ModelSerializer):
     class Meta:
@@ -81,7 +81,7 @@ class FileSerializer(serializers.ModelSerializer):
 class ApplyHalfSerializer(serializers.ModelSerializer):
     class Meta:
         model = ApplyHalf
-        fields = ['user','message','file','created']
+        fields = ['user','message','file',]
 
 
 class ReviewSerializer(serializers.ModelSerializer):
@@ -92,16 +92,31 @@ class ReviewSerializer(serializers.ModelSerializer):
         return obj.user.username
     class Meta:
         model = Review
-        fields = ['id','user','user_name','review','created']
+        fields = ['id','user','user_name','review',]
 
 
 class BlogViewSerializer(serializers.ModelSerializer):
     class Meta:
         model = Blog
-        fields=['id','title','short_description','created']
+        fields=['id','title','short_description',]
 
 class BlogDetailsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Blog
-        fields = ['id','title','short_description','content','created']
+        fields = ['id','title','short_description','content']
+
+class StaffInfoSerializer(serializers.ModelSerializer):
+    name = serializers.SerializerMethodField()
+    bus_company = serializers.SerializerMethodField()
+
+
+    def get_name(self,obj):
+        return obj.user.username
+
+    def get_bus_company(self,obj):
+        return obj.bus_company.name
+    
+    class Meta:
+        model = StaffInfo
+        fields = ['id','name','bus_company','salary','description']
 

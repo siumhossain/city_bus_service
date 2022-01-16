@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.admin.decorators import action
 from django.http import HttpResponse
 
-from .models import Album, Announcement, ApplyHalf, Blog, BusCompany, Bus, Fileup, Review, Route, RouteDetails, Ticket, TimeSlot, Track, User, UserEmail  
+from .models import Album, Announcement, ApplyHalf, Blog, BusCompany, Bus, Fileup, Review, Route, RouteDetails, StaffInfo, Ticket, TimeSlot, Track, User, UserEmail  
 # Register your models here.
 
 
@@ -34,6 +34,7 @@ admin.site.register(Review)
 admin.site.register(Announcement)
 admin.site.register(UserEmail)
 admin.site.register(Blog)
+admin.site.register(StaffInfo)
 
 
 
